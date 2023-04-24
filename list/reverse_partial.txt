@@ -1,0 +1,46 @@
+// BM2 链表内指定区间反转
+/**
+ * struct ListNode {
+ *	int val;
+ *	struct ListNode *next;
+ * };
+ */
+
+class Solution {
+public:
+    /**
+     * 
+     * @param head ListNode类 
+     * @param m int整型 
+     * @param n int整型 
+     * @return ListNode类
+     */
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        // write code here
+        auto* dummy  = new ListNode(-1);
+        dummy ->next = head;
+        ListNode *nprev = dummy , *mprev = dummy;
+        --m;
+        --n;
+        while(m) {
+          mprev = mprev->next;
+          nprev = nprev->next;
+          --m;
+          --n;
+        }
+        while(n) {
+          nprev = nprev->next;
+          --n;
+        }
+        ListNode *end = nprev->next->next; //保存末尾节点
+        ListNode *re = mprev->next;  //从那个节点开始
+        mprev->next = end; //末尾节点移动到这个地方
+        while(re != end) {
+          ListNode *tmp = re->next;
+          re->next = mprev->next;
+          mprev->next = re;
+          re = tmp;
+        }
+        return dummy->next;
+    }
+};
